@@ -1,0 +1,12 @@
+            
+            <div class="form-group">
+                <input type="hidden"  name="token" id="inputtoken" value="{{ token }}">
+            </div>
+
+             <div class="form-group">
+                <input type="hidden"  name="page_app" id="pageapp" value="{{ page_app }}">
+             </div>
+
+             <div class="form-group">
+                <input type="hidden"  name="ip" id="ip" value="1.1.2.2">
+             </div>

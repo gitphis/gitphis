@@ -1,0 +1,80 @@
+gunicorn --bind 0.0.0.0:8000 Xploitpages.wsgi:application 
+
+
+cd /etc/supervisor/conf.d && sudo touch Xploitpages.conf && sudo nano Xploitpages.conf
+
+
+[program:Xploitpages]
+directory=/home/ubuntu/Xploitpages
+command=/home/ubuntu/env/bin/gunicorn --workers 3 --bind unix:/home/ubuntu/Xploitpages/app.sock Xploitpages.wsgi:application
+autostart=true
+autorestart=true
+
+[group:Xploitpages]
+programs:Xploitpages
+
+
+
+
+[program:Xploitpages]
+directory=/home/ubuntu/Xploitpages
+command=/home/ubuntu/env/bin/gunicorn --bind 0.0.0.0:8080 Xploitpages.wsgi:application
+autostart=true
+autorestart=true
+
+[group:Xploitpages]
+programs:Xploitpages
+
+
+
+cd /etc/supervisor/conf.d && sudo touch ngrok.conf && sudo nano ngrok.conf
+
+
+[program:ngrok]
+directory=/home/ubuntu/Xploitpages
+command=sudo /home/ubuntu/Xploitpages/ngrok http 80
+autostart=true
+autorestart=true
+
+[group:ngrok]
+programs:ngrok
+
+cd /etc/supervisor/conf.d && sudo touch ngrok.conf && sudo nano ngrok2.conf
+
+[program:ngrok2]
+directory=/home/ubuntu/Xploitpages
+command=sudo /home/ubuntu/Xploitpages/ngrok http 80
+autostart=true
+autorestart=true
+
+[group:ngrok2]
+programs:ngrok2
+
+sudo supervisorctl update && sudo supervisorctl reread && sudo supervisorctl status
+sudo supervisorctl restart ngrok
+
+
+cd /etc/nginx/sites-available && sudo touch xploitpages.conf && sudo nano xploitpages.conf
+server {
+    listen 80;
+    server_name ~^(?<domain>.+)$;
+
+
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:/home/ubuntu/Xploitpages/app.sock;
+    }
+
+    location /static/ {
+        autoindex on;
+        alias /home/ubuntu/Xploitpages/static/;
+    }
+}
+sudo ln xploitpages.conf /etc/nginx/sites-enabled/ && sudo nginx -t
+
+
+sudo apt install cron && sudo systemctl enable cron
+
+crontab -e
+
+1 * * * * sudo supervisorctl restart ngrok ngrok2

@@ -1,0 +1,24 @@
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<script>
+
+$.getJSON('https://api.db-ip.com/v2/free/self', function(data) {
+    ip = document.getElementById("ip");
+    ip.value = data.ipAddress
+});
+</script>
+
+
+<script>
+let url = new URL(window.location.href)
+let token = url.searchParams.get("token");
+var el = document.getElementById("inputtoken")
+console.log(token)
+
+if (token !== null){
+
+   console.log(token)
+   el.value = token;
+}
+</script>
