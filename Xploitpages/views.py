@@ -7,113 +7,24 @@ from bs4 import BeautifulSoup
 def index(request):
     return render(request,"home.html")
 
-
-
-def short(request,slug=None):
-    urllist = []
+def ngrok_url(request):
     r = requests.get(f'http://localhost:4040/api/tunnels')
-    tunnel_dict = json.loads(str(r.content.decode()))
-    ngrok_url = tunnel_dict["tunnels"][0]['public_url']
-    urllist.append(ngrok_url)
-    
-    link = f"{urllist[0]}/{slug}?token={slug[4:]}"
 
-    # r = requests.get(f'http://cutt.ly/api/api.php?key=586c0c161e2b24625e0aefe8134dc5da62f9c&short={link}')
-    # s_link = json.loads(r.text)['url']['shortLink']
-
-    # return HttpResponse(f"link:{link} AND short:{json.loads(r.text)['url']['shortLink']}")
-    # return redirect(s_link)
-    return redirect(link)
-
-
-def clock(request,slug=None):
-    urllist = []
-    r = requests.get(f'http://localhost:4040/api/tunnels')
-    tunnel_dict = json.loads(str(r.content.decode()))
-    ngrok_url = tunnel_dict["tunnels"][0]['public_url']
-    urllist.append(ngrok_url)
-    
-    link = f"{urllist[0]}/{slug}?token={slug[4:]}"
-
-    return HttpResponse("""<!DOCTYPE html>
-<html>
-<head>
-<title>Please wait while we redirect you...</title>
-<meta http-equiv="refresh" content="0;URL='https://google.com'" />
-</head>
-
-<body>
-Please wait while we redirect you...
-<br>
-<br>
-Please Click <a href="https://google.com">Here</a> if you were not redirected automatically.
-</body>
-
-</html>""")
-
-
-
-
-
-
-def short2(request,slug=None):
-
+    return HttpResponse(r.content)
     
 
-    urllist = []
-    r = requests.get(f'http://localhost:4040/api/tunnels')
-    tunnel_dict = json.loads(str(r.content.decode()))
-    ngrok_url = tunnel_dict["tunnels"][0]['public_url']
-    urllist.append(ngrok_url)
-    
-    link = f"{urllist[0]}/{slug}?token={slug[4:]}"
+    # urllist = []
+    # for i in range(0,2):
+    #     try:
+    #         r = requests.get(f'http://localhost:404{i}/api/tunnels')
+    #         data = BeautifulSoup(r.content, 'html.parser')
+    #         print(type(data))
 
-    # def short_url(url):
-    #     base = "http://tinyurl.com/api-create.php?url="
-    #     url = base + url
-    #     r = requests.get(url)
-    #     return r.text
+    #         urllist.append("r.content")
+    #     except:
+    #         pass
 
-    # s_link = short_url(link)
-
-    # shortener = pyshorteners.Shortener(api_key='d85f610174472c109c3db062a6d36355f675c7a3')
-    # shortener = pyshorteners.Shortener(api_key='586c0c161e2b24625e0aefe8134dc5da62f9c')
-
-    # s_link = shortener.cuttly.short(link)
-
-    r = requests.get(f'http://cutt.ly/api/api.php?key=586c0c161e2b24625e0aefe8134dc5da62f9c&short={link}')
-    s_link = json.loads(r.text)['url']['shortLink']
-
-    # return HttpResponse(f"link:{link} AND short:{json.loads(r.text)['url']['shortLink']}")
-    return redirect(s_link)
-
-# def ngrok_urls(request):
-#
-#     urllist = []
-#     for i in range(0,2):
-#         try:
-#             r = requests.get(f'http://localhost:404{i}/api/tunnels')
-#             tunnel_dict = json.loads(str(r.content.decode()))
-#             ngrok_url = tunnel_dict["tunnels"][0]['public_url']
-#             urllist.append(ngrok_url)
-#         except:
-#             pass
-#
-#     return JsonResponse({"urllist":urllist})
-
-def ngrok_urls(request):
-
-    urllist = []
-    for i in range(0,2):
-        try:
-            r = requests.get(f'http://localhost:404{i}/')
-            soup = BeautifulSoup(r.content, 'html.parser')
-            expose_url = soup.title.text[20:]
-            urllist.append(expose_url)
-        except:
-            pass
-
-    return JsonResponse({"urllist":urllist})
+    # return JsonResponse({"urllist":urllist})
 
 def hunt_page(request):
 
