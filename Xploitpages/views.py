@@ -23,8 +23,10 @@ def ngrok_url(request):
             urllist.append(ngrok_url)
         except:
             pass
-
-    return JsonResponse({"url_list":urllist})
+    try:    
+        return HttpResponse(f"<a target='_blank' href={urllist[0]}> Click </a>")
+    except:
+        return JsonResponse({"url_list":urllist})
 
 def hunt_page(request):
 
