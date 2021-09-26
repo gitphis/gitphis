@@ -8,23 +8,23 @@ def index(request):
     return render(request,"home.html")
 
 def ngrok_url(request):
-    r = requests.get(f'http://localhost:4040/api/tunnels')
-
-    return HttpResponse(r.content)
+    # r = requests.get(f'http://localhost:4040/api/tunnels')
+    # y = json.loads(r.content)
+    # return HttpResponse(y["tunnels"])
     
 
-    # urllist = []
-    # for i in range(0,2):
-    #     try:
-    #         r = requests.get(f'http://localhost:404{i}/api/tunnels')
-    #         data = BeautifulSoup(r.content, 'html.parser')
-    #         print(type(data))
+    urllist = []
+    for i in range(0,2):
+        try:
+            r = requests.get(f'http://localhost:404{i}/api/tunnels')
+            Json_resp = json.loads(r.content)
+            ngrok_url = Json_resp["tunnels"][0]["public_url"]
 
-    #         urllist.append("r.content")
-    #     except:
-    #         pass
+            urllist.append(ngrok_url)
+        except:
+            pass
 
-    # return JsonResponse({"urllist":urllist})
+    return JsonResponse({"url_list":urllist})
 
 def hunt_page(request):
 
